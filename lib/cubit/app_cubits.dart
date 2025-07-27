@@ -1,40 +1,40 @@
-import 'package:bloc/bloc.dart';
-import 'package:myapp/cubit/app_cubit_states.dart';
-import 'package:myapp/model/data_model.dart';
-import 'package:myapp/services/data_servies.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../model/data_model.dart';
+import '../services/data_servies.dart';
+import 'app_cubit_states.dart';
 
 class AppCubits extends Cubit<CubitStates> {
-  AppCubits({required this.data}) : super(InitialState()){
+  AppCubits({required this.data}) : super(InitialState()) {
     emit(WelcomeState());
   }
   final DataServices data;
   // ignore: prefer_typing_uninitialized_variables
   late final places;
 
-  goFrontPage(){
-    emit(WelcomeState());  
+  goFrontPage() {
+    emit(WelcomeState());
   }
 
   void getData() async {
-    try{
+    try {
       emit(LoadingState());
       places = await data.getInfo();
       emit(LoadedState(places));
     }
     // ignore: empty_catches
-    catch(e){
+    catch (e) {
       emit(LoadingState());
       places = await data.getInfo();
       emit(LoadedState(places));
     }
   }
 
-  detailPage(DataModel data){
+  detailPage(DataModel data) {
     emit(DetailState(data));
   }
 
-  goHome(){
+  goHome() {
     emit(LoadedState(places));
   }
-  
 }
